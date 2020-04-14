@@ -59,6 +59,45 @@ public class SignupActivity extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String str_firstname = firstname.getText().toString().trim();
+                String str_lastname = lastname.getText().toString().trim();
+                final String str_email = email.getText().toString().trim();
+                String str_password = password.getText().toString().trim();
+                String str_password2 = password2.getText().toString().trim();
+
+                if (TextUtils.isEmpty(str_firstname)) {
+                    Toast.makeText(getApplicationContext(), "Enter first name!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(str_lastname)) {
+                    Toast.makeText(getApplicationContext(), "Enter last name!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(str_email)) {
+                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(str_password)) {
+                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (str_password.length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!str_password2.contentEquals(str_password)) {
+                    Toast.makeText(getApplicationContext(), "Wrong password repeat!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 auth.createUserWithEmailAndPassword(str_email, str_password)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
