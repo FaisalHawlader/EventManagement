@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,10 +35,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,13 +59,15 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
-public class AddEventDetailsFragment extends Fragment {
+public class AddEventDetailsFragment extends Fragment   {
 
     private static final String TAG = "ggg >.>";
 
@@ -70,9 +76,11 @@ public class AddEventDetailsFragment extends Fragment {
 
 
     private final int PICK_IMAGE_REQUEST = 10; //71 img
-    private ImageView imageView; //img
+    private ImageView imageView,imgView; //img
+    private ImageView videoViewSelect; //img
     private Uri filePath; //img
-    String imageUrl;
+    String imageUrlFinal;
+    String videourlFinal;
 
 
     //Firebase
@@ -97,7 +105,7 @@ public class AddEventDetailsFragment extends Fragment {
     private String mParam2;
     private EditText E555_S, E5555_C;
 
-    EditText description, title;
+    EditText description, titleMain, locationtxt;
     private Button btnGet, time_buttn, save;
 
     private ArrayList<String> permissionsToRequest;
@@ -106,13 +114,12 @@ public class AddEventDetailsFragment extends Fragment {
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
-    Button  locationbtn;
-    double longitude ;
-    double latitude ;
+    double longitudeVal ;
+    double latitudeVal ;
     private Bitmap bitmap;
-    private File destination = null;
+    private File destination,destinationvideoPath = null;
     private InputStream inputStreamImg;
-    private String imgPath = null;
+    private String imgPath, videoPath = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,18 +145,31 @@ public class AddEventDetailsFragment extends Fragment {
 
 
         description = view.findViewById(R.id.description);
-        title = view.findViewById(R.id.title);
-        locationbtn = view.findViewById(R.id.locationbtn);
+        titleMain = view.findViewById(R.id.title);
+        locationtxt = view.findViewById(R.id.locationtxt);
 
         mprofileUserData = Utils.userDetailsFromPreference(getActivity());
         //Initialize Views
 
-        imageView = (ImageView) view.findViewById(R.id.imgView);
+        imageView = (ImageView) view.findViewById(R.id.imgViewSelect);
+        imgView = (ImageView) view.findViewById(R.id.imgView);
+        videoViewSelect = (ImageView) view.findViewById(R.id.videoViewSelect);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!title.getText().toString().isEmpty()) {
+                if(!titleMain.getText().toString().isEmpty()) {
                     selectImage();
+                }else{
+                    Toast.makeText(getActivity(),"Mention Name",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+        videoViewSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!titleMain.getText().toString().isEmpty()) {
+                    selectVideo();
                 }else{
                     Toast.makeText(getActivity(),"Mention Name",Toast.LENGTH_LONG).show();
                 }
@@ -162,17 +182,39 @@ public class AddEventDetailsFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
+                if (!titleMain.getText().toString().isEmpty()) {
 
-                String des = ""+description.getText().toString();
-                String tle = title.getText().toString();
-                ProfileUserData user = Utils.userDetailsFromPreference(getActivity());
+                    String des = "" + description.getText().toString();
+                    String tle = titleMain.getText().toString();
+                    ProfileUserData user = Utils.userDetailsFromPreference(getActivity());
+
+                    LatLng latlong = getLocationFromAddress(locationtxt.getText().toString());
+                    if (latlong != null) {
+                        longitudeVal = latlong.longitude;
+                        latitudeVal = latlong.latitude;
+                    } else {
+                        longitudeVal = 0.0;
+                        latitudeVal = 0.0;
+                    }
+                    if (latlong == null && !(locationtxt.getText().toString().isEmpty())) {
+                        Toast.makeText(getActivity(),
+                                "Invalid Location!",
+                                Toast.LENGTH_SHORT).show();  //I have add User Profile data so that we will get whole user details
 
 
-                //I have add User Profile data so that we will get whole user details
-                EntryDetails details = new EntryDetails(  Utils.getUserGmail(getActivity()),des,  imageUrl  ,  tle, longitude,longitude, user);
-                save.setText("Uploading...");
-                //notifyDataSetChanged();
-                saveData(details);
+                    } else {
+                        Log.e("aa",imageUrlFinal+" "+videourlFinal);
+                        EntryDetails details = new EntryDetails(Utils.getUserGmail(getActivity()), des, imageUrlFinal, tle, longitudeVal, latitudeVal, user, null, "0", videourlFinal);
+                        save.setText("Uploading...");
+                        //notifyDataSetChanged();
+                        saveData(details);
+                    }
+                }else {
+                    Toast.makeText(getActivity(),
+                            "Please enter data!",
+                            Toast.LENGTH_SHORT).show();  //I have add User Profile data so that we will get whole user details
+
+                }
             }
         });
 
@@ -192,42 +234,31 @@ public class AddEventDetailsFragment extends Fragment {
         }
 
 
-        locationbtn.setText("Share Location");
-        locationbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                locationTrack = new LocationTrack(getActivity());
-                if(locationbtn.getText().toString().contains("Share Location")) {
-                    if (locationTrack.canGetLocation()) {
+        DocumentReference washingtonRef = db.collection("cities").document("DC");
 
-                        locationbtn.setText("Cancel");
-
-                        longitude = locationTrack.getLongitude();
-                        latitude = locationTrack.getLatitude();
-
-                        //Toast.makeText(getActivity(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-                    } else {
-
-                        locationbtn.setText("Error!");
-                        locationTrack.showSettingsAlert();
+// Set the "isCapital" field of the city 'DC'
+        washingtonRef
+                .update("capital", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
                     }
-                }else{
-                    locationbtn.setText("Share Location");
-                    longitude = 0.0;
-                    latitude = 0.0;
-                }
-
-            }
-        });
-
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
 
         return view;
     }
 
 
     private void saveData(EntryDetails details) {
-        if(save.getText().toString().contains("Uploading")) {
+        if(!titleMain.getText().toString().isEmpty()) {
             db.collection("events")
                     .add(details)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -235,8 +266,7 @@ public class AddEventDetailsFragment extends Fragment {
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                             save.setText("Done");
-                            getActivity().getFragmentManager().popBackStack();
-
+                            getActivity().onBackPressed();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -279,7 +309,8 @@ public class AddEventDetailsFragment extends Fragment {
                 }
 
                 imgPath = destination.getAbsolutePath();
-                // imageview.setImageBitmap(bitmap);
+                imgView.setImageBitmap(bitmap);
+                uploadImage(imgPath);
                 //MyProfileFragment.mImageSelectionCompleteListner.onImageSelectionComplete(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -296,20 +327,34 @@ public class AddEventDetailsFragment extends Fragment {
                 destination = new File(imgPath.toString());
                 Log.e("Activity", "Pick from Gallery::>>> ");
                 // MyProfileFragment.mImageSelectionCompleteListner.onImageSelectionComplete(bitmap);
+                imgView.setImageBitmap(bitmap);
+                uploadImage(imgPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if(requestCode == Utils.PICK_VIDEO_CAMERA){
+            try {
+                Uri selectedImage = data.getData();
+
+                videoPath = Utils.getRealPathFromURI(getActivity(), selectedImage);
+                destinationvideoPath = new File(videoPath.toString());
+                Log.e("Activity", "Pick from Gallery::>>> ");
+                // MyProfileFragment.mImageSelectionCompleteListner.onImageSelectionComplete(bitmap);
                 //imageview.setImageBitmap(bitmap);
-                uploadImage();
+                uploadVideo(videoPath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void uploadImage() {
+    private void uploadImage(String pathh) {
+        final String name = "image"+titleMain.getText().toString()+new Random().nextInt(100);
 
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReference();
-        StorageReference uploadeRef = storageRef.child(title.getText().toString());
-        File file = new File(imgPath);
+        StorageReference uploadeRef = storageRef.child(name);
+        File file = new File(pathh);
         Uri fileUri = Uri.fromFile(file);
 
         progressDialog = new ProgressDialog(getActivity(),
@@ -333,7 +378,42 @@ public class AddEventDetailsFragment extends Fragment {
                 Toast.makeText(getActivity(),
                         "File has been uploaded to cloud storage",
                         Toast.LENGTH_SHORT).show();
-                getImage(title.getText().toString());
+                getImage(name);
+
+
+            }
+        });
+    }
+    private void uploadVideo(String pathh) {
+        final String name = "video"+titleMain.getText().toString()+new Random().nextInt(100);
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageRef = firebaseStorage.getReference();
+        StorageReference uploadeRef = storageRef.child(name);
+        File file = new File(pathh);
+        Uri fileUri = Uri.fromFile(file);
+
+        progressDialog = new ProgressDialog(getActivity(),
+                ProgressDialog.THEME_HOLO_DARK);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Uploading...");
+        progressDialog.show();
+
+        uploadeRef.putFile(fileUri).addOnFailureListener(new OnFailureListener() {
+            public void onFailure(@NonNull Exception exception) {
+                progressDialog.cancel();
+                Toast.makeText(getActivity(),
+                        "Upload failed",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.cancel();
+                //add file name to firestore database
+                Toast.makeText(getActivity(),
+                        "File has been uploaded to cloud storage",
+                        Toast.LENGTH_SHORT).show();
+                getVideo(name);
 
 
             }
@@ -357,18 +437,51 @@ public class AddEventDetailsFragment extends Fragment {
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
                 Log.e("aaa "+name,"uri "+uri);
-                imageUrl = uri.toString();
+                imageUrlFinal = uri.toString();
                 Glide.with(getActivity())
-                        .load(imageUrl)
+                        .load(imageUrlFinal)
                         .asBitmap()
 
-                        .into(imageView);
+                        .into(imgView);
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
+                Log.e("aaimagea "+name,"exception "+exception);
+            }
+        });
+
+
+
+    }
+    private void getVideo(final String name){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // StorageReference storageRef = storage.getReferenceFromUrl("gs://tutsplus-firebase.appspot.com").child(name);
+
+        /*     final long ONE_MEGABYTE = 1024 * 1024;
+            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    Log.e("aaa "+name,"bitmap "+bitmap);
+                }
+            });*/
+        StorageReference storageRef = storage.getReference();
+        storageRef.child(name).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                Log.e("aaa video "+name,"uri "+uri);
+                videourlFinal = uri.toString();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.e("aavideoea "+name,"exception "+exception);
             }
         });
 
@@ -485,6 +598,61 @@ public class AddEventDetailsFragment extends Fragment {
         }
 
     }
+
+    public LatLng getLocationFromAddress( String strAddress) {
+
+        Geocoder coder = new Geocoder(getActivity());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            Log.e("mmmmmm",""+address);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
+    private void selectVideo() {
+        try {
+            PackageManager pm = getActivity().getPackageManager();
+            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getActivity().getPackageName());
+            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+                final CharSequence[] options = { "Choose From Gallery", "Cancel"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Select Option");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals("Choose From Gallery")) {
+                            dialog.dismiss();
+                            Intent intent = new Intent (Intent.ACTION_PICK,MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("video/*");
+                            startActivityForResult(Intent.createChooser(intent,"Select Video"),Utils.PICK_VIDEO_CAMERA);
+                        } else if (options[item].equals("Cancel")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            } else
+                Toast.makeText(getActivity(), "Camera Permission error", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Camera ", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

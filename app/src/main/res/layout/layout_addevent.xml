@@ -5,7 +5,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         tools:ignore="RedundantNamespace">
         <LinearLayout
             android:orientation="vertical" android:layout_width="match_parent"
@@ -13,22 +12,39 @@
            >
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="200dp"
+    >
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@color/light_gray"
+        android:layout_height="match_parent"
+        android:background="@color/light_gray"
+        android:src="@drawable/img"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/imgViewSelect"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/baseline_publish_black"
+        android:src="@drawable/cam"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
         tools:ignore="ContentDescription" />
+    <ImageView
+        android:id="@+id/videoViewSelect"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/videoicon"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toLeftOf="@+id/imgViewSelect"
+        tools:ignore="ContentDescription" />
+
 
 </RelativeLayout>
 
@@ -38,8 +54,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
+                android:padding="18dp"
                 tools:ignore="UselessParent">
 
 
@@ -66,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:hint="address"
+                        android:hint="Event Name"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -97,25 +112,38 @@
 
 
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/locationbtn"
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:background="@color/colorPrimary"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_margin="50dp"
-                    android:text="Share Location"
-                    android:layout_alignParentBottom="true"
-                    android:textColor="@android:color/white" />
+                    android:layout_marginTop="10dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".3"
+                        android:textSize="18dp"
+                        android:layout_height="wrap_content"
+                        android:text="Location :">
+
+                    </TextView>
+                    <EditText
+                        android:id="@+id/locationtxt"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="Location name"
+                        />
+                </LinearLayout>
+
 
 
             </LinearLayout>
 
 
         </LinearLayout>
+
 
 
         <Button
