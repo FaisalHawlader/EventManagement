@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lux.eventmanagement">
+    package="com.lux.eventmanagementApp">
 
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,7 +16,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -29,9 +29,9 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDKK6ihtgiRhF1Y2N97A5F3dhaa_BnuNGc"/>
+            android:value="AIzaSyAfZXg8uzgXA-svmnnSd0T2am6mQpe4Z-0"/>
         <activity
-            android:name=".MainActivity"
+            android:name="com.lux.eventmanagementApp.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -39,12 +39,12 @@
 
 
     <activity
-        android:name=".LoginActivity"
+        android:name="com.lux.eventmanagementApp.LoginActivity"
         android:theme="@style/AppTheme.NoActionBar">
 
     </activity>
     <activity
-        android:name=".SplashScreen"
+        android:name="com.lux.eventmanagementApp.SplashScreen"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
         <intent-filter android:label="@string/app_name">
@@ -53,25 +53,25 @@
         </intent-filter>
     </activity>
     <activity
-        android:name=".HomeMainActivity"
+        android:name="com.lux.eventmanagementApp.HomeMainActivity"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
     </activity>
     <activity
-        android:name=".SignupActivity"
+        android:name="com.lux.eventmanagementApp.SignupActivity"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
     </activity>
     <activity
-        android:name=".EntryDetailsActivity"
+        android:name="com.lux.eventmanagementApp.EntryDetailsActivity"
         android:label="@string/app_name">
     </activity>
         <activity
-            android:name=".MapsActivity"
+            android:name="com.lux.eventmanagementApp.MapsActivity"
             android:label="@string/title_activity_maps">
         </activity>
         <activity
-            android:name=".VideoActivity"
+            android:name="com.lux.eventmanagementApp.VideoActivity"
             android:label="Video View">
         </activity>
     </application>

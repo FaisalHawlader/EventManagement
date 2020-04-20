@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "963440543142",
-    "firebase_url": "https://eventmanagement-3a67f.firebaseio.com",
-    "project_id": "eventmanagement-3a67f",
-    "storage_bucket": "eventmanagement-3a67f.appspot.com"
+    "project_number": "138239178450",
+    "firebase_url": "https://eventmanagementapp-ab79c.firebaseio.com",
+    "project_id": "eventmanagementapp-ab79c",
+    "storage_bucket": "eventmanagementapp-ab79c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:963440543142:android:7c5537f1bf0e38dcd33b67",
+        "mobilesdk_app_id": "1:138239178450:android:ef404e2d41e3a415f0df0b",
         "android_client_info": {
-          "package_name": "com.lux.eventmanagement"
+          "package_name": "com.lux.eventmanagementApp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "963440543142-h0h4hi02ajpa8cvb5j3otf0ml414nm26.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.lux.eventmanagement",
-            "certificate_hash": "13ac4994435eb27a06728f4704eb015e51dfb080"
-          }
-        },
-        {
-          "client_id": "963440543142-p06julsdghap4mcpo8r6jfe8h999805i.apps.googleusercontent.com",
+          "client_id": "138239178450-4f71mpqltcqq62a5e423r2lrrfhsoeb2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBesgMdvRc1FoLl6HkCZXim2L4jpTmUNe4"
+          "current_key": "AIzaSyCBYoqZirvAFuY_Tk3Va1T53DUsb5lt5i8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "963440543142-p06julsdghap4mcpo8r6jfe8h999805i.apps.googleusercontent.com",
+              "client_id": "138239178450-4f71mpqltcqq62a5e423r2lrrfhsoeb2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

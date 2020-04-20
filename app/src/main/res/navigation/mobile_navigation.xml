@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.lux.eventmanagement.fragments.HomeListFragment"
+        android:name="com.lux.eventmanagementApp.fragments.HomeListFragment"
         android:label="@string/nav_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.lux.eventmanagement.fragments.ProviderProfile"
+        android:name="com.lux.eventmanagementApp.fragments.ProviderProfile"
         android:label="@string/nav_profile"
         tools:layout="@layout/main_activity_jehan" />
 
     <fragment
         android:id="@+id/nav_addnewentry"
-        android:name="com.lux.eventmanagement.fragments.AddEventDetailsFragment"
+        android:name="com.lux.eventmanagementApp.fragments.AddEventDetailsFragment"
         android:label="@string/nav_add"
         tools:layout="@layout/layout_addevent">
         <action
@@ -29,20 +29,20 @@
 
     <fragment
         android:id="@+id/nav_aboutuspage"
-        android:name="com.lux.eventmanagement.fragments.AboutusFragment"
+        android:name="com.lux.eventmanagementApp.fragments.AboutusFragment"
         android:label="@string/nav_about_us"
         tools:layout="@layout/fragment_aboutus" />
 
     <fragment
         android:id="@+id/nav_contact_uspage"
-        android:name="com.lux.eventmanagement.fragments.ContactUsFragment"
+        android:name="com.lux.eventmanagementApp.fragments.ContactUsFragment"
         android:label="@string/contactus"
         tools:layout="@layout/fragment_contactus" />
 
 
     <fragment
         android:id="@+id/nav_myractivities"
-        android:name="com.lux.eventmanagement.fragments.MyEntriesListFrgament"
+        android:name="com.lux.eventmanagementApp.fragments.MyEntriesListFrgament"
         android:label="@string/nav_myactivities"
         tools:layout="@layout/layout_myentries">
         <action
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_detailspage"
-        android:name="com.lux.eventmanagement.fragments."
+        android:name="com.lux.eventmanagementApp.fragments."
         android:label="fragment_page"
         tools:layout="@layout/fragment_details" />
 </navigation>
