@@ -75,12 +75,10 @@ public class AboutusFragment extends Fragment {
 
         btnPrev.setOnClickListener(onClickListener(0));
         btnNext.setOnClickListener(onClickListener(1));
-        text_aboutus.setText("Food should be available to everyone. No one should sleep hungry. " +
-                "his application is designed to allow people to help needy people by providing them quality food and motivate them to " +
-                "avoid wastage of food. Anyone can use this platform to provide food to those people who are not able to buy food. " +
-                "Also, anyone can volunteer to help in delivering the food. Any Non-Profit Organization or other organization which works" +
-                " for needy people can contact to register themselves with us in order to get quality food. " +
-                "Some people are waiting for your help, Lets do something for them.");
+        text_aboutus.setText(
+                "Many industries, charitable organizations, and interest groups hold events in order to market their label, build business relationships, raise money, or celebrate achievement." +
+                "This application is designed to allow people to organize different types of event " +
+                "Anyone can use this platform to create new and find ongoing event. It is very simple to use, so please use this application and make sure you don't miss any event near to you.");
 
         setImagesData();
 
