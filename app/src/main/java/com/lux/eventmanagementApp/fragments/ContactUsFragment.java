@@ -56,7 +56,7 @@ public class ContactUsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "612345"));
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+352661837394"));
                     startActivity(intent);
                 } else {
                     requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 1);
@@ -69,7 +69,7 @@ public class ContactUsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto","forallprojectajrs@gmail.com", null));
+                        "mailto","faisalhawlader260@gmail.com", null));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Mail From App");
                 startActivity(Intent.createChooser(emailIntent, "Send email..."));
             }
