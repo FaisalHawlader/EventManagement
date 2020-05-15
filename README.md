@@ -15,7 +15,7 @@ Right now, the available features are:
 
 ## Authors
 
-* **Faisal HAWLADER** - For more details please don't hesitate to ask: faisalhawlader260@gmail.com
+* **HAWLADER Faisal** - For more details please don't hesitate to ask: faisalhawlader260@gmail.com
 
 
 ## Acknowledgments
