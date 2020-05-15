@@ -18,12 +18,8 @@ description, video, photos and event location);
 ## Authors
 
 * **Faisal HAWLADER** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+For more details about this project don't hesitate to ask: faisalhawlader@gmail.com
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
