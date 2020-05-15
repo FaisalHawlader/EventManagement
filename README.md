@@ -17,8 +17,7 @@ description, video, photos and event location);
   2. Live chat, rate events, comment and location is also visible;
 ## Authors
 
-* **Faisal HAWLADER** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-For more details about this project don't hesitate to ask: faisalhawlader@gmail.com
+* **Faisal HAWLADER** - For more details please don't hesitate to ask: faisalhawlader260@gmail.com
 
 
 ## Acknowledgments
