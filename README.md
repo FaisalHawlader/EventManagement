@@ -5,7 +5,7 @@
 
 ## Objective
 
-The main objective of this project is to develop an Android application in order to manage the real world event. 
+The main objective of this project is to develop an Android application for EVENT MANAGEMENT. 
 
 ### Available features:
 Right now, the available features are:
