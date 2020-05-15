@@ -1,7 +1,4 @@
-# EventManagement
-# Project Title
-
-“Event Manager” App Project
+# Project Title: EventManagement with Android Studio
 
 ## Objective
 
