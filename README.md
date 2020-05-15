@@ -8,13 +8,13 @@
 The main objective of this project is to develop an Android application in order to manage the real world event. 
 
 ### Available features:
-Right now the avaiable features are:
-  1.  create an event (with a
-description, video, photos and event location);
-  2. All users have change to look for events that other users have shared;
-  3. The user has right to edit or delet their own event;
-  4. Event is searchable by different catagorics;
-  2. Live chat, rate events, comment and location is also visible;
+Right now, the available features are:
+  1. create an event (with a description, video, photos, and event location);
+  2. All users have a chance to look for activities that other users have shared;
+  3. The user has the right to edit or delete their event;
+  4. Event is searchable by different categories;
+  5. Live chat, rate events, comment, and the location is also visible;
+
 ## Authors
 
 * **Faisal HAWLADER** - For more details please don't hesitate to ask: faisalhawlader260@gmail.com
