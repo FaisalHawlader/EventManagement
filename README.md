@@ -14,6 +14,7 @@ Right now, the available features are:
   3. The user has the right to edit or delete their event;
   4. Event is searchable by different categories;
   5. Live chat, rate events, comment, and the location is also visible;
+  6. Users can save the place and time to the google calendar;
 
 ## Authors
 
